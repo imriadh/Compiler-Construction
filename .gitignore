@@ -1,0 +1,6 @@
+compiler
+src/parser/parser.tab.c
+src/parser/parser.tab.h
+src/lexer/lex.yy.c
+output/semantic_log.txt
+output/output.asm
