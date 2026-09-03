@@ -1,28 +1,28 @@
-# Use a lightweight Python image
 FROM python:3.9-slim
 
-# Install C++ compiler, make, flex, and bison
+# Install C++ build tools, flex, and bison
 RUN apt-get update && apt-get install -y \
     build-essential \
     flex \
     bison \
+    make \
     && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
 WORKDIR /app
 
-# Copy Python requirements and install them
+# Copy and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all your project files to the server
+# Copy all project files
 COPY . .
 
-# Build the compiler on the Linux server
+# Build the compiler (This creates the './compiler' Linux executable)
 RUN make
 
-# Expose the port Render expects
+# Ensure the compiler is executable
+RUN chmod +x ./compiler
+
 EXPOSE 10000
 
-# Start the Flask app
 CMD ["python", "app.py"]
