@@ -1,16 +1,15 @@
 CC = g++
-# Added -static here to bundle all libraries into the .exe
-CFLAGS = -std=c++11 -w -static 
+CFLAGS = -std=c++11 -w -static
 
 all: compiler
 
 compiler: src/lexer/lexer.l src/parser/parser.y src/parser/ast.h src/parser/codegen.h src/symbol_table/SymbolInfo.h src/symbol_table/ScopeTable.h src/symbol_table/SymbolTable.h src/main.cpp
 	bison -d src/parser/parser.y -o src/parser/parser.tab.c
 	flex -o src/lexer/lex.yy.c src/lexer/lexer.l
-	$(CC) $(CFLAGS) src/parser/parser.tab.c src/lexer/lex.yy.c src/main.cpp -o compiler.exe
+	$(CC) $(CFLAGS) src/parser/parser.tab.c src/lexer/lex.yy.c src/main.cpp -o compiler
 
 run: compiler
-	./compiler.exe test/test.c
+	./compiler test/test.c
 
 clean:
-	rm -f compiler.exe src/parser/parser.tab.c src/parser/parser.tab.h src/lexer/lex.yy.c output/semantic_log.txt output/output.asm
+	rm -f compiler src/parser/parser.tab.c src/parser/parser.tab.h src/lexer/lex.yy.c output/semantic_log.txt output/output.asm
