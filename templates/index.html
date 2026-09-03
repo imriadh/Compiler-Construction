@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compiler Construction Project</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      textarea {
+        width: 100%;
+        height: 300px;
+        padding: 10px;
+        font-family: 'Consolas', monospace;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+      }
+      pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        height: 300px;
+        margin: 0;
+      }
+      button {
+        padding: 12px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      .console {
+        margin-top: 20px;
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .console pre {
+        background: #fff;
+        color: #d63384;
+        height: 150px;
+        border: 1px solid #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🛠️ C-like to 8086 Assembly Compiler</h1>
+    <div class="container">
+      <div class="box">
+        <h3>Input C-like Code</h3>
+        <textarea
+          id="codeInput"
+          placeholder="int x = 5;&#10;int y = 10;&#10;int z = x + y;"
+        >
+int x = 5;
+int y = 10;
+int z = x + y;</textarea
+        >
+        <button onclick="compileCode()">Compile & Generate Assembly</button>
+      </div>
+      <div class="box">
+        <h3>Generated 8086 Assembly</h3>
+        <pre id="asmOutput">Assembly code will appear here...</pre>
+      </div>
+    </div>
+    <div class="console">
+      <h3>Compiler Console Output (Semantic/Syntax Logs)</h3>
+      <pre id="consoleOutput">Waiting for compilation...</pre>
+    </div>
+
+    <script>
+      async function compileCode() {
+        const code = document.getElementById('codeInput').value;
+        const asmOutput = document.getElementById('asmOutput');
+        const consoleOutput = document.getElementById('consoleOutput');
+
+        asmOutput.innerText = 'Compiling...';
+        consoleOutput.innerText = 'Processing...';
+
+        try {
+          const response = await fetch('/compile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: code }),
+          });
+
+          const data = await response.json();
+
+          if (data.assembly) {
+            asmOutput.innerText = data.assembly;
+          } else {
+            asmOutput.innerText =
+              'No assembly generated. Check console for errors.';
+          }
+
+          consoleOutput.innerText = data.console || 'No console output.';
+        } catch (error) {
+          asmOutput.innerText = 'Error connecting to server.';
+          consoleOutput.innerText = error.toString();
+        }
+      }
+    </script>
+  </body>
+</html>
