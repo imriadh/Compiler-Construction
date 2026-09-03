@@ -1,7 +1,3 @@
-int x;
-int y;
-int z;
-
-x = 5;
-y = 10;
-z = x + y;
+int x = 5;
+int y = 10;
+int z = x + y;

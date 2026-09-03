@@ -6,7 +6,7 @@ all: compiler
 compiler: src/lexer/lexer.l src/parser/parser.y src/parser/ast.h src/parser/codegen.h src/symbol_table/SymbolInfo.h src/symbol_table/ScopeTable.h src/symbol_table/SymbolTable.h src/main.cpp
 	bison -d src/parser/parser.y -o src/parser/parser.tab.c
 	flex -o src/lexer/lex.yy.c src/lexer/lexer.l
-	$(CC) $(CFLAGS) src/parser/parser.tab.c src/lexer/lex.yy.c src/main.cpp -o compiler -lfl
+		$(CC) $(CFLAGS) src/parser/parser.tab.c src/lexer/lex.yy.c src/main.cpp -o compiler
 
 run: compiler
 	./compiler test/test.c
