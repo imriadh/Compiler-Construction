@@ -21,7 +21,7 @@ def compile_code():
     # Run your compiler executable
     try:
         # Use 'compiler.exe' for Windows
-        result = subprocess.run(['compiler.exe', 'test/test.c'], capture_output=True, text=True)
+        result = subprocess.run(['./compiler', 'test/test.c'], capture_output=True, text=True)
     except Exception as e:
         return jsonify({'error': str(e), 'assembly': '', 'console': 'Failed to run compiler.exe'}), 500
         
